@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="Google.Apis.Auth" Version="1.67.0" />
+		<PackageReference Include="WatchDog.NET" Version="1.4.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BSC.Domain\BSC.Domain.csproj" />
+		<ProjectReference Include="..\BSC.Infraestructure\BSC.Infrastructure.csproj" />
+		<ProjectReference Include="..\BSC.Utilities\BSC.Utilities.csproj" />
+	</ItemGroup>
+
+</Project>
