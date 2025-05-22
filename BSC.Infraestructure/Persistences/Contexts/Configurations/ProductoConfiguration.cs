@@ -13,11 +13,17 @@ namespace BSC.Infrastructure.Persistences.Contexts.Configurations
 
             builder.Property(e => e.Clave)
                    .HasMaxLength(11)
-                   .IsUnicode(false);
+                   .IsUnicode(false)
+                   .IsRequired();
+
+            builder.HasIndex(e => e.Clave)
+                  .IsUnique();
 
             builder.Property(e => e.Nombre)
                    .HasMaxLength(50)
                    .IsUnicode(false);
+
+            builder.HasIndex(e => e.Nombre);
 
             builder.Property(e => e.Existencia)
                    .IsRequired();

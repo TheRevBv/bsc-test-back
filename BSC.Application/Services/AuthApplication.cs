@@ -26,7 +26,7 @@ namespace BSC.Application.Services
         private readonly AppSettings _appSettings = appSettings.Value;
 
         public async Task<BaseResponse<TokenReponseDto>> Login(TokenRequestDto requestDto,
-            string authType)
+            string? authType)
         {
             var response = new BaseResponse<TokenReponseDto>();
 
@@ -41,7 +41,7 @@ namespace BSC.Application.Services
                     return response;
                 }
 
-                if (user.TipoAutenticacion != authType)
+                if (!authType.IsNullOrEmpty() && user.TipoAutenticacion != authType)
                 {
                     response.IsSuccess = false;
                     response.Message = ReplyMessage.MESSAGE_AUTH_TYPE_GOOGLE;

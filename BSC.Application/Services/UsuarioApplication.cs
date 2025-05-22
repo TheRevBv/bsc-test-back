@@ -16,20 +16,22 @@ namespace BSC.Application.Services
         private readonly IConfiguration _configuration = configuration;
         //private readonly IAzureStorage _azureStorage = azureStorage;
 
-        public async Task<BaseResponse<bool>> RegisterUser(UsuarioRequestDto requestDto)
+        public async Task<BaseResponse<Usuario?>> RegisterUser(UsuarioRequestDto requestDto)
         {
-            var response = new BaseResponse<bool>();
+            var response = new BaseResponse<Usuario?>();
             var account = _mapper.Map<Usuario>(requestDto);
             account.Contrasena = PasswordHasher.HashPassword(account.Contrasena!);
 
             if (requestDto.Imagen is not null)
             {
-                //account.Imagen = await _azureStorage.SaveFile(AzureContainers.USERS, requestDto.Image);
+                // account.Imagen = await _azureStorage.SaveFile(AzureContainers.USERS, requestDto.Image);
             }
 
-            response.Data = await _unitOfWork.Usuario.RegisterAsync(account);
+            var createdUser = await _unitOfWork.Usuario.RegisterAsync(account);
 
-            if (response.Data)
+            response.Data = createdUser;
+
+            if (createdUser is not null)
             {
                 response.IsSuccess = true;
                 response.Message = ReplyMessage.MESSAGE_SAVE;
@@ -43,7 +45,8 @@ namespace BSC.Application.Services
             return response;
         }
 
-        private async Task<Usuario> GetUserByEmail(string email)
+
+        public async Task<Usuario> GetUserByEmail(string email)
         {
             return await _unitOfWork.Usuario.UsuarioByCorreo(email);
         }

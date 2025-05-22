@@ -35,18 +35,28 @@ namespace BSC.Infrastructure.Persistences.Repositories
             return getById!;
         }
 
-        public async Task<bool> RegisterAsync(T entity)
+        public async Task<T?> RegisterAsync(T entity)
         {
             entity.UsuarioAltaId = 1;
             entity.FechaAlta = DateTime.Now;
+            entity.UsuarioModId = 1;
+            entity.FechaMod = DateTime.Now;
 
             await _context.AddAsync(entity);
-
             var recordsAffected = await _context.SaveChangesAsync();
-            return recordsAffected > 0;
+
+            if (recordsAffected > 0)
+            {
+                // Esto es opcional, pero garantiza que obtienes la versión final desde la BD
+                await _context.Entry(entity).ReloadAsync();
+                return entity;
+            }
+
+            return null;
         }
 
-        public async Task<bool> EditAsync(T entity)
+
+        public async Task<T?> EditAsync(T entity)
         {
             entity.UsuarioModId = 1;
             entity.FechaMod = DateTime.Now;
@@ -57,8 +67,10 @@ namespace BSC.Infrastructure.Persistences.Repositories
             _context.Entry(entity).Property(x => x.FechaAlta).IsModified = false;
 
             var recordsAffected = await _context.SaveChangesAsync();
-            return recordsAffected > 0;
+
+            return recordsAffected > 0 ? entity : null;
         }
+
 
         public async Task<bool> RemoveAsync(int id)
         {

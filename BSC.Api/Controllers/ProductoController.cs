@@ -3,11 +3,13 @@ using BSC.Application.Interfaces;
 using BSC.Application.Commons.Bases.Request;
 using BSC.Application.Dtos.Producto.Request;
 using BSC.Utilities.Static;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BSC.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductoController(IProductoApplication productoApplication) : ControllerBase
     {
         private readonly IProductoApplication _productApplication = productoApplication;
@@ -42,14 +44,14 @@ namespace BSC.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterProduct([FromForm] ProductoRequestDto requestDto)
+        public async Task<IActionResult> RegisterProduct([FromBody] ProductoRequestDto requestDto)
         {
             var response = await _productApplication.RegisterProducto(requestDto);
             return Ok(response);
         }
 
         [HttpPut("Edit/{productId:int}")]
-        public async Task<IActionResult> EditProduct(int productId, [FromForm] ProductoRequestDto requestDto)
+        public async Task<IActionResult> EditProduct(int productId, [FromBody] ProductoRequestDto requestDto)
         {
             var response = await _productApplication.EditProducto(productId, requestDto);
             return Ok(response);

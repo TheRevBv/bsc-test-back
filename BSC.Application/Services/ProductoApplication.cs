@@ -132,9 +132,9 @@ namespace BSC.Application.Services
             return response;
         }
 
-        public async Task<BaseResponse<bool>> RegisterProducto(ProductoRequestDto requestDto)
+        public async Task<BaseResponse<Producto?>> RegisterProducto(ProductoRequestDto requestDto)
         {
-            var response = new BaseResponse<bool>();
+            var response = new BaseResponse<Producto?>();
 
             using var transaction = _unitOfWork.BeginTransaction();
 
@@ -142,14 +142,21 @@ namespace BSC.Application.Services
             {
                 var product = _mapper.Map<Producto>(requestDto);
 
-                //if (requestDto.Image is not null)
-                    //product.Image = await _fileStorage.SaveFile(AzureContainers.PRODUCTS, requestDto.Image);
+                // if (requestDto.Image is not null)
+                //     product.Image = await _fileStorage.SaveFile(AzureContainers.PRODUCTS, requestDto.Image);
 
-                await _unitOfWork.Producto.RegisterAsync(product);
-                int productId = product.Id;
-              
+                var createdProduct = await _unitOfWork.Producto.RegisterAsync(product);
+
+                if (createdProduct is null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = ReplyMessage.MESSAGE_FAILED;
+                    return response;
+                }
+
                 transaction.Commit();
                 response.IsSuccess = true;
+                response.Data = createdProduct;
                 response.Message = ReplyMessage.MESSAGE_SAVE;
             }
             catch (Exception ex)
@@ -163,26 +170,39 @@ namespace BSC.Application.Services
             return response;
         }
 
-        public async Task<BaseResponse<bool>> EditProducto(int productId, ProductoRequestDto requestDto)
+        public async Task<BaseResponse<Producto?>> EditProducto(int productId, ProductoRequestDto requestDto)
         {
-            var response = new BaseResponse<bool>();
+            var response = new BaseResponse<Producto?>();
 
             try
             {
-                var pathImage = await ProductoById(productId);
+                var current = await ProductoById(productId);
+                if (!current.IsSuccess || current.Data is null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
+                    return response;
+                }
+
                 var product = _mapper.Map<Producto>(requestDto);
-
-                //if (requestDto.Image is not null)
-                //    product.Image = await _fileStorage
-                //        .EditFile(AzureContainers.PRODUCTS, requestDto.Image, pathImage.Data!.Image!);
-
-                //if (requestDto.Image is null)
-                //    product.Image = pathImage.Data!.Image;
-
                 product.Id = productId;
-                await _unitOfWork.Producto.EditAsync(product);
+
+                // if (requestDto.Image is not null)
+                //     product.Image = await _fileStorage.EditFile(AzureContainers.PRODUCTS, requestDto.Image, current.Data.Image!);
+                // else
+                //     product.Image = current.Data.Image;
+
+                var updatedProduct = await _unitOfWork.Producto.EditAsync(product);
+
+                if (updatedProduct is null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = ReplyMessage.MESSAGE_FAILED;
+                    return response;
+                }
 
                 response.IsSuccess = true;
+                response.Data = product;
                 response.Message = ReplyMessage.MESSAGE_UPDATE;
             }
             catch (Exception ex)

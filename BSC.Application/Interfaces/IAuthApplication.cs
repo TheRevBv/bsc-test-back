@@ -6,7 +6,7 @@ namespace BSC.Application.Interfaces
 {
     public interface IAuthApplication
     {
-        Task<BaseResponse<TokenReponseDto>> Login(TokenRequestDto requestDto, string authType);
+        Task<BaseResponse<TokenReponseDto>> Login(TokenRequestDto requestDto, string? authType);
         Task<BaseResponse<TokenReponseDto>> LoginWithGoogle(string credentials, string authType);
     }
 }
