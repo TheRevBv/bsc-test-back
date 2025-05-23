@@ -13,7 +13,7 @@ namespace BSC.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost()]
-        public async Task<IActionResult> RegisterUser([FromForm] UsuarioRequestDto requestDto)
+        public async Task<IActionResult> RegisterUser([FromBody] UsuarioRequestDto requestDto)
         {
             var response = await _userApplication.RegisterUser(requestDto);
             return Ok(response);
