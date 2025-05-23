@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using BSC.Infrastructure.FileExcel;
+using BSC.Infrastructure.FileStorage;
 using BSC.Infrastructure.Persistences.Contexts;
 using BSC.Infrastructure.Persistences.Interfaces;
 using BSC.Infrastructure.Persistences.Repositories;
+using BSC.Infrastructure.SqlCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BSC.Infrastructure.Extensions
 {
@@ -19,6 +22,9 @@ namespace BSC.Infrastructure.Extensions
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<ISqlExecutor, SqlExecutor>();
+            services.AddTransient<IFileStorageLocal, FileStorageLocal>();
+            services.AddTransient<IGenerateExcel, GenerateExcel>();
 
             return services;
         }

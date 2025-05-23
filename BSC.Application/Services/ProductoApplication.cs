@@ -11,14 +11,16 @@ using BSC.Domain.Entities;
 using BSC.Infrastructure.Persistences.Interfaces;
 using BSC.Utilities.Static;
 using WatchDog;
+using BSC.Infrastructure.SqlCore;
 
 namespace BSC.Application.Services
 {
-    public class ProductoApplication(IUnitOfWork unitOfWork, IMapper mapper, IOrderingQuery orderingQuery) : IProductoApplication
+    public class ProductoApplication(IUnitOfWork unitOfWork, IMapper mapper, IOrderingQuery orderingQuery, ISqlExecutor sqlExecutor) : IProductoApplication
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
         private readonly IOrderingQuery _orderingQuery = orderingQuery;
+        private readonly ISqlExecutor _sqlExecutor = sqlExecutor;
 
         public async Task<BaseResponseAll<IEnumerable<ProductoResponseDto>>> ListProductos(BaseFiltersRequest filters)
         {
