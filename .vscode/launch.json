@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "BSC.Api (VS Code)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/BSC.Api/bin/Debug/net8.0/BSC.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/BSC.Api",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_LAUNCH_PROFILE": "BSC.Api" // 👈 Esto fuerza el uso de tu perfil
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "http://localhost:5000/swagger"
+      }
+    }
+  ]
+}

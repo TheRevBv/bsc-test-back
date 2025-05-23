@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BSC.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/productos")]
     [ApiController]
     [Authorize]
     public class ProductoController(IProductoApplication productoApplication) : ControllerBase
@@ -29,7 +29,7 @@ namespace BSC.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("Select")]
+        [HttpGet("select")]
         public async Task<IActionResult> ListSelectProducts()
         {
             var response = await _productApplication.ListSelectProductos();
@@ -43,21 +43,21 @@ namespace BSC.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("Register")]
+        [HttpPost()]
         public async Task<IActionResult> RegisterProduct([FromBody] ProductoRequestDto requestDto)
         {
             var response = await _productApplication.RegisterProducto(requestDto);
             return Ok(response);
         }
 
-        [HttpPut("Edit/{productId:int}")]
+        [HttpPut("{productId:int}")]
         public async Task<IActionResult> EditProduct(int productId, [FromBody] ProductoRequestDto requestDto)
         {
             var response = await _productApplication.EditProducto(productId, requestDto);
             return Ok(response);
         }
 
-        [HttpPut("Remove/{productId:int}")]
+        [HttpDelete("{productId:int}")]
         public async Task<IActionResult> RemoveProduct(int productId)
         {
             var response = await _productApplication.RemoveProducto(productId);

@@ -19,9 +19,9 @@ namespace BSC.Application.Services
         private readonly IMapper _mapper = mapper;
         private readonly IOrderingQuery _orderingQuery = orderingQuery;
 
-        public async Task<BaseResponse<IEnumerable<PedidoResponseDto>>> ListPedidos(BaseFiltersRequest filters)
+        public async Task<BaseResponseAll<IEnumerable<PedidoResponseDto>>> ListPedidos(BaseFiltersRequest filters)
         {
-            var response = new BaseResponse<IEnumerable<PedidoResponseDto>>();
+            var response = new BaseResponseAll<IEnumerable<PedidoResponseDto>>();
 
             try
             {
@@ -48,7 +48,10 @@ namespace BSC.Application.Services
                 var items = await _orderingQuery.Ordering(filters, pedidos, !(bool)filters.Download!).ToListAsync();
 
                 response.IsSuccess = true;
-                response.TotalRecords = await pedidos.CountAsync();
+                response.Total = await pedidos.CountAsync();
+                response.Pages = (int)Math.Ceiling((decimal)response.Total / filters.Limit);
+                response.Page = filters.Page != 0 ? filters.Page : 1;
+                response.Limit = filters.Limit;
                 response.Data = _mapper.Map<IEnumerable<PedidoResponseDto>>(items);
                 response.Message = ReplyMessage.MESSAGE_QUERY;
             }
@@ -99,10 +102,42 @@ namespace BSC.Application.Services
             try
             {
                 var pedido = _mapper.Map<Pedido>(requestDto);
+                pedido.ProductosPedido = [];
+
+                foreach (var item in requestDto.Productos)
+                {
+                    var producto = await _unitOfWork.Producto.GetByIdAsync(item.ProductoId);
+
+                    if (producto == null)
+                    {
+                        transaction.Rollback();
+                        response.IsSuccess = false;
+                        response.Message = $"El producto con ID {item.ProductoId} no existe.";
+                        return response;
+                    }
+                    if (producto.Existencia < item.Cantidad)
+                    {
+                        transaction.Rollback();
+                        response.IsSuccess = false;
+                        response.Message = $"El producto con clave {producto.Clave} no tiene suficiente existencia.";
+                        return response;
+                    }
+
+                    producto.Existencia -= item.Cantidad;
+                    await _unitOfWork.Producto.EditAsync(producto);
+
+                    pedido.ProductosPedido.Add(new PedidoProducto
+                    {
+                        ProductoId = item.ProductoId,
+                        Cantidad = item.Cantidad
+                    });
+                }
+
                 var created = await _unitOfWork.Pedido.RegisterAsync(pedido);
 
                 if (created is null)
                 {
+                    transaction.Rollback();
                     response.IsSuccess = false;
                     response.Message = ReplyMessage.MESSAGE_FAILED;
                     return response;

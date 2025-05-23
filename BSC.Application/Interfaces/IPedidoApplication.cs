@@ -8,7 +8,7 @@ namespace BSC.Application.Interfaces
 {
     public interface IPedidoApplication
     {
-        Task<BaseResponse<IEnumerable<PedidoResponseDto>>> ListPedidos(BaseFiltersRequest filters);
+        Task<BaseResponseAll<IEnumerable<PedidoResponseDto>>> ListPedidos(BaseFiltersRequest filters);
         Task<BaseResponse<PedidoByIdResponseDto>> PedidoById(int pedidoId);
         Task<BaseResponse<Pedido?>> RegisterPedido(PedidoRequestDto requestDto);
         Task<BaseResponse<Pedido?>> EditPedido(int pedidoId, PedidoRequestDto requestDto);

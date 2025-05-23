@@ -9,7 +9,7 @@ namespace BSC.Application.Interfaces
 {
     public interface IProductoApplication
     {
-        Task<BaseResponse<IEnumerable<ProductoResponseDto>>> ListProductos(BaseFiltersRequest filters);
+        Task<BaseResponseAll<IEnumerable<ProductoResponseDto>>> ListProductos(BaseFiltersRequest filters);
         Task<BaseResponse<IEnumerable<SelectResponse>>> ListSelectProductos();
         Task<BaseResponse<ProductoByIdResponseDto>> ProductoById(int productId);
         Task<BaseResponse<Producto?>> RegisterProducto(ProductoRequestDto requestDto);

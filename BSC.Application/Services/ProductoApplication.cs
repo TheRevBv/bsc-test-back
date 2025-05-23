@@ -20,9 +20,9 @@ namespace BSC.Application.Services
         private readonly IMapper _mapper = mapper;
         private readonly IOrderingQuery _orderingQuery = orderingQuery;
 
-        public async Task<BaseResponse<IEnumerable<ProductoResponseDto>>> ListProductos(BaseFiltersRequest filters)
+        public async Task<BaseResponseAll<IEnumerable<ProductoResponseDto>>> ListProductos(BaseFiltersRequest filters)
         {
-            var response = new BaseResponse<IEnumerable<ProductoResponseDto>>();
+            var response = new BaseResponseAll<IEnumerable<ProductoResponseDto>>();
 
             try
             {
@@ -59,7 +59,10 @@ namespace BSC.Application.Services
                 var items = await _orderingQuery.Ordering(filters, products, !(bool)filters.Download!).ToListAsync();
 
                 response.IsSuccess = true;
-                response.TotalRecords = await products.CountAsync();
+                response.Total = await products.CountAsync();
+                response.Pages = (int)Math.Ceiling((decimal)response.Total / filters.Limit);
+                response.Page = filters.Page != 0 ? filters.Page : 1;
+                response.Limit = filters.Limit;
                 response.Data = _mapper.Map<IEnumerable<ProductoResponseDto>>(items);
                 response.Message = ReplyMessage.MESSAGE_QUERY;
             }

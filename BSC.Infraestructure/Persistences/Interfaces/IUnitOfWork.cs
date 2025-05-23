@@ -8,6 +8,8 @@ namespace BSC.Infrastructure.Persistences.Interfaces
         //Declaración o matricula de nuestra interfaces a nivel de repository
         IUsuarioRepository Usuario { get; }
         IGenericRepository<Producto> Producto { get; }
+        IGenericRepository<Pedido> Pedido { get; }
+
         void SaveChanges();
         Task SaveChangesAsync();
         IDbTransaction BeginTransaction();

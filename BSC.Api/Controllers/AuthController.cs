@@ -5,7 +5,7 @@ using BSC.Application.Interfaces;
 
 namespace BSC.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace BSC.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] TokenRequestDto requestDto,
             [FromQuery] string? authType)
         {
@@ -26,7 +26,7 @@ namespace BSC.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("LoginWithGoogle")]
+        [HttpPost("loginWithGoogle")]
         public async Task<IActionResult> LoginWithGoogle([FromBody] string credenciales,
             [FromQuery] string authType)
         {

@@ -23,6 +23,7 @@ namespace BSC.Application.Extensions
             services.AddScoped<IUsuarioApplication, UsuarioApplication>();;
             services.AddScoped<IAuthApplication, AuthApplication>();
             services.AddScoped<IProductoApplication, ProductoApplication>();
+            services.AddScoped<IPedidoApplication, PedidoApplication>();
 
             services.AddWatchDog(configuration);
 

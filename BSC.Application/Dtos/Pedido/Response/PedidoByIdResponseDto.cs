@@ -1,4 +1,6 @@
-﻿namespace BSC.Application.Dtos.Pedido.Response
+﻿using BSC.Application.Dtos.PedidoProducto.Response;
+
+namespace BSC.Application.Dtos.Pedido.Response
 {
     public class PedidoByIdResponseDto
     {
