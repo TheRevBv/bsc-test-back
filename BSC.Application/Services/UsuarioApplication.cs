@@ -22,7 +22,7 @@ namespace BSC.Application.Services
             var account = _mapper.Map<Usuario>(requestDto);
             account.Contrasena = PasswordHasher.HashPassword(account.Contrasena!);
 
-            if (requestDto.Imagen is not null)
+            if (requestDto.Imagen != null || requestDto.Imagen?.Length > 0)
             {
                 // account.Imagen = await _azureStorage.SaveFile(AzureContainers.USERS, requestDto.Image);
             }
