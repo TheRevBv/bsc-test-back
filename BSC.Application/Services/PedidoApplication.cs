@@ -10,6 +10,7 @@ using BSC.Domain.Entities;
 using BSC.Infrastructure.Persistences.Interfaces;
 using BSC.Utilities.Static;
 using WatchDog;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BSC.Application.Services
 {
@@ -25,23 +26,27 @@ namespace BSC.Application.Services
 
             try
             {
-                var pedidos = _unitOfWork.Pedido.GetAllQueryable();
+                var pedidosQuery = _unitOfWork.Pedido.GetAllQueryable();
 
                 if (filters.NumFilter is not null && !string.IsNullOrEmpty(filters.TextFilter))
                 {
                     switch (filters.NumFilter)
                     {
                         case 1:
-                            pedidos = pedidos.Where(x => x.Cliente!.Contains(filters.TextFilter));
+                            pedidosQuery = pedidosQuery.Where(x => x.Cliente!.Contains(filters.TextFilter));
                             break;
                     }
                 }
 
                 if (!string.IsNullOrEmpty(filters.StartDate) && !string.IsNullOrEmpty(filters.EndDate))
                 {
-                    pedidos = pedidos.Where(x => x.FechaPedido >= Convert.ToDateTime(filters.StartDate)
+                    pedidosQuery = pedidosQuery.Where(x => x.FechaPedido >= Convert.ToDateTime(filters.StartDate)
                         && x.FechaPedido <= Convert.ToDateTime(filters.EndDate).AddDays(1));
                 }
+
+                var pedidos = pedidosQuery
+                    .Include(p => p.ProductosPedido)
+                        .ThenInclude(pp => pp.Producto);
 
                 filters.Sort ??= "Id";
 

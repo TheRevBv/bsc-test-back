@@ -4,7 +4,7 @@ namespace BSC.Application.Dtos.Pedido.Response
 {
     public class PedidoByIdResponseDto
     {
-        public int Id { get; set; }
+        public int PedidoId { get; set; }
         public string Cliente { get; set; } = null!;
         public DateTime FechaPedido { get; set; }
         public int UsuarioId { get; set; }

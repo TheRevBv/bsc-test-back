@@ -1,4 +1,6 @@
-﻿namespace BSC.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace BSC.Domain.Entities
 {
     public partial class Producto : BaseEntity
     {
@@ -12,6 +14,7 @@
         public int Existencia { get; set; }
         public decimal? Precio { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<PedidoProducto> ProductosPedido { get; set; }
     }
 }

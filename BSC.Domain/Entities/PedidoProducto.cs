@@ -1,4 +1,6 @@
-﻿namespace BSC.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace BSC.Domain.Entities
 {
     public partial class PedidoProducto
     {
@@ -7,6 +9,7 @@
         public int ProductoId { get; set; }
         public int Cantidad { get; set; }
 
+        [JsonIgnore]
         public virtual Pedido Pedido { get; set; } = null!;
         public virtual Producto Producto { get; set; } = null!;
     }
