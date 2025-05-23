@@ -20,10 +20,11 @@ namespace BSC.Application.Extensions
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddTransient<IOrderingQuery, OrderingQuery>();
-            services.AddScoped<IUsuarioApplication, UsuarioApplication>();;
+            services.AddScoped<IUsuarioApplication, UsuarioApplication>(); ;
             services.AddScoped<IAuthApplication, AuthApplication>();
             services.AddScoped<IProductoApplication, ProductoApplication>();
             services.AddScoped<IPedidoApplication, PedidoApplication>();
+            services.AddScoped<IRolApplication, RolApplication>();
 
             services.AddWatchDog(configuration);
 

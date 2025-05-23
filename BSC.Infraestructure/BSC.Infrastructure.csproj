@@ -17,12 +17,20 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BSC.Domain\BSC.Domain.csproj" />
 	  <ProjectReference Include="..\BSC.Utilities\BSC.Utilities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Persistences\Migrations\" />
 	</ItemGroup>
 
 </Project>

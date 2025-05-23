@@ -103,6 +103,7 @@ namespace BSC.Infrastructure.Persistences.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Clave")
+                        .IsRequired()
                         .HasMaxLength(11)
                         .IsUnicode(false)
                         .HasColumnType("varchar(11)");
@@ -135,26 +136,44 @@ namespace BSC.Infrastructure.Persistences.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Clave")
+                        .IsUnique();
+
+                    b.HasIndex("Nombre");
+
                     b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("BSC.Domain.Entities.Rol", b =>
                 {
-                    b.Property<int>("RolId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RolId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int?>("Estado")
+                    b.Property<int>("Estado")
                         .HasColumnType("int");
 
-                    b.HasKey("RolId");
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaMod")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UsuarioAltaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioModId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });

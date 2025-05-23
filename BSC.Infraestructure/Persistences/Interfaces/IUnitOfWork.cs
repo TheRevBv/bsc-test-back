@@ -9,6 +9,9 @@ namespace BSC.Infrastructure.Persistences.Interfaces
         IUsuarioRepository Usuario { get; }
         IGenericRepository<Producto> Producto { get; }
         IGenericRepository<Pedido> Pedido { get; }
+        IGenericRepository<Rol> Rol { get; }
+        public IRolUsuarioRepository RolUsuario { get; }
+
 
         void SaveChanges();
         Task SaveChangesAsync();

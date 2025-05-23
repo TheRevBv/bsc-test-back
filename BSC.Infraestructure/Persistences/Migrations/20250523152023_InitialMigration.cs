@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BSC.Infrastructure.Persistences.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace BSC.Infrastructure.Persistences.Migrations
                 {
                     ProductoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Clave = table.Column<string>(type: "varchar(11)", unicode: false, maxLength: 11, nullable: true),
+                    Clave = table.Column<string>(type: "varchar(11)", unicode: false, maxLength: 11, nullable: false),
                     Nombre = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     Existencia = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
@@ -39,7 +39,11 @@ namespace BSC.Infrastructure.Persistences.Migrations
                     RolId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Estado = table.Column<int>(type: "int", nullable: true)
+                    UsuarioAltaId = table.Column<int>(type: "int", nullable: false),
+                    FechaAlta = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsuarioModId = table.Column<int>(type: "int", nullable: true),
+                    FechaMod = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -160,6 +164,17 @@ namespace BSC.Infrastructure.Persistences.Migrations
                 name: "IX_PedidosProductos_ProductoId",
                 table: "PedidosProductos",
                 column: "ProductoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Productos_Clave",
+                table: "Productos",
+                column: "Clave",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Productos_Nombre",
+                table: "Productos",
+                column: "Nombre");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolesUsuario_RolId",

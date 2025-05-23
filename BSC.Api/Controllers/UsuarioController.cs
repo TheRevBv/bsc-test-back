@@ -1,22 +1,39 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using BSC.Application.Dtos.Usuario.Request;
+﻿using Microsoft.AspNetCore.Mvc;
 using BSC.Application.Interfaces;
+using BSC.Application.Commons.Bases.Request;
+using BSC.Application.Dtos.Usuario.Request;
+using BSC.Application.Dtos.RolUsuario.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BSC.Api.Controllers
 {
     [Route("api/usuarios")]
     [ApiController]
-    public class UsuarioController(IUsuarioApplication userApplication) : ControllerBase
+    public class UsuarioController(IUsuarioApplication usuarioApp) : ControllerBase
     {
-        private readonly IUsuarioApplication _userApplication = userApplication;
+        private readonly IUsuarioApplication _usuarioApp = usuarioApp;
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> List([FromQuery] BaseFiltersRequest filters) => Ok(await _usuarioApp.ListUsuarios(filters));
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetById(int id) => Ok(await _usuarioApp.UsuarioById(id));
+
+        [HttpPost]
         [AllowAnonymous]
-        [HttpPost()]
-        public async Task<IActionResult> RegisterUser([FromBody] UsuarioRequestDto requestDto)
-        {
-            var response = await _userApplication.RegisterUser(requestDto);
-            return Ok(response);
-        }
+        public async Task<IActionResult> Register([FromBody] UsuarioRequestDto dto) => Ok(await _usuarioApp.RegisterUsuario(dto));
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(int id, [FromBody] UsuarioRequestDto dto) => Ok(await _usuarioApp.EditUsuario(id, dto));
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id) => Ok(await _usuarioApp.RemoveUsuario(id));
+
+        [HttpPost("asignar-roles")]
+        [Authorize]
+        public async Task<IActionResult> AsignarRoles([FromBody] AsignarRolesUsuarioDto dto) => Ok(await _usuarioApp.AsignarRolesUsuario(dto));
     }
 }

@@ -15,6 +15,8 @@ namespace BSC.Infrastructure.Persistences.Repositories
         public IUsuarioRepository _usuario = null!;
         public IGenericRepository<Producto> _producto = null!;
         public IGenericRepository<Pedido> _pedido = null!;
+        public IGenericRepository<Rol> _rol = null!;
+        public IRolUsuarioRepository _rolUsuario = null!;
 
         public UnitOfWork(BSCContext context, IConfiguration configuration)
         {
@@ -28,6 +30,8 @@ namespace BSC.Infrastructure.Persistences.Repositories
         public IUsuarioRepository Usuario => _usuario ?? new UsuarioRepository(_context);
         public IGenericRepository<Producto> Producto => _producto ?? new GenericRepository<Producto>(_context);
         public IGenericRepository<Pedido> Pedido => _pedido ?? new GenericRepository<Pedido>(_context);
+        public IGenericRepository<Rol> Rol => _rol ?? new GenericRepository<Rol>(_context);
+        public IRolUsuarioRepository RolUsuario => _rolUsuario ?? new RolUsuarioRepository(_context);
 
 
         public IDbTransaction BeginTransaction()
