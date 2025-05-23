@@ -14,6 +14,7 @@ public class PedidoResponseDto
 public class PedidoProductoSimpleDto
 {
     public int ProductoId { get; set; }
+    public string Clave { get; set; } = null!;
     public int Cantidad { get; set; }
     public string ProductoNombre { get; set; } = null!;
     public decimal? Precio { get; set; }

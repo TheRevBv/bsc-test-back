@@ -23,6 +23,7 @@ namespace BSC.Application.Mappers
             CreateMap<PedidoProducto, PedidoProductoSimpleDto>()
                 .ForMember(dest => dest.ProductoId, opt => opt.MapFrom(src => src.ProductoId))
                 .ForMember(dest => dest.Cantidad, opt => opt.MapFrom(src => src.Cantidad))
+                .ForMember(dest => dest.Clave, opt => opt.MapFrom(src => src.Producto.Clave))
                 .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Producto.Nombre))
                 .ForMember(dest => dest.Precio, opt => opt.MapFrom(src => src.Producto.Precio));
 
@@ -33,6 +34,12 @@ namespace BSC.Application.Mappers
                 .ForMember(dest => dest.PedidoId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Productos, opt => opt.MapFrom(src => src.ProductosPedido));
 
+            CreateMap<PedidoProducto, PedidoByIdProductoSimpleDto>()
+                .ForMember(dest => dest.ProductoId, opt => opt.MapFrom(src => src.ProductoId))
+                .ForMember(dest => dest.Clave, opt => opt.MapFrom(src => src.Producto.Clave))
+                .ForMember(dest => dest.Cantidad, opt => opt.MapFrom(src => src.Cantidad))
+                .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Producto.Nombre))
+                .ForMember(dest => dest.Precio, opt => opt.MapFrom(src => src.Producto.Precio));
         }
     }
 }

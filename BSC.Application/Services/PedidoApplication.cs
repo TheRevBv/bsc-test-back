@@ -76,7 +76,11 @@ namespace BSC.Application.Services
 
             try
             {
-                var pedido = await _unitOfWork.Pedido.GetByIdAsync(pedidoId);
+                var pedido = await _unitOfWork.Pedido
+                            .GetAllQueryable()
+                            .Include(p => p.ProductosPedido)
+                                .ThenInclude(pp => pp.Producto)
+                            .FirstOrDefaultAsync(p => p.Id == pedidoId);
 
                 if (pedido is null)
                 {
