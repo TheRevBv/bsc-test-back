@@ -7,14 +7,9 @@ namespace BSC.Api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthApplication authApplication) : ControllerBase
     {
-        private readonly IAuthApplication _authApplication;
-
-        public AuthController(IAuthApplication authApplication)
-        {
-            _authApplication = authApplication;
-        }
+        private readonly IAuthApplication _authApplication = authApplication;
 
         [AllowAnonymous]
         [HttpPost("login")]

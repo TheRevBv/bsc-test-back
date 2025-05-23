@@ -13,13 +13,13 @@ namespace BSC.Application.Mappers
         {
             CreateMap<Rol, RolResponseDto>()
                 .ForMember(x => x.RolId, x => x.MapFrom(y => y.Id))
-                .ForMember(x => x.Estado,
+                .ForMember(x => x.Estatus,
                     x => x.MapFrom(y => y.Estado.Equals((int)StateTypes.Active) ? "Activo" : "Inactivo"))
                 .ReverseMap();
 
             CreateMap<Rol, RolByIdResponseDto>()
                 .ForMember(x => x.RolId, x => x.MapFrom(y => y.Id))
-                .ForMember(x => x.Estado,
+                .ForMember(x => x.Estatus,
                     x => x.MapFrom(y => y.Estado.Equals((int)StateTypes.Active) ? "Activo" : "Inactivo"))
                 .ReverseMap();
 
