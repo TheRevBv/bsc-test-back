@@ -176,11 +176,11 @@ namespace BSC.Application.Services
             return response;
         }
 
-        public async Task<BaseResponse<bool>> AsignarRolesUsuario(AsignarRolesUsuarioDto dto)
+        public async Task<BaseResponse<bool>> AsignarRolesUsuario(int usuarioId, AsignarRolesUsuarioDto dto)
         {
             var response = new BaseResponse<bool>();
 
-            var usuario = await _unitOfWork.Usuario.GetByIdAsync(dto.UsuarioId);
+            var usuario = await _unitOfWork.Usuario.GetByIdAsync(usuarioId);
             if (usuario == null)
             {
                 response.IsSuccess = false;
@@ -188,12 +188,12 @@ namespace BSC.Application.Services
                 return response;
             }
 
-            var actuales = await _unitOfWork.RolUsuario.GetByUsuarioIdAsync(dto.UsuarioId);
+            var actuales = await _unitOfWork.RolUsuario.GetByUsuarioIdAsync(usuarioId);
             _unitOfWork.RolUsuario.RemoveRange(actuales);
 
             var nuevos = dto.RolesIds.Select(rolId => new RolUsuario
             {
-                UsuarioId = dto.UsuarioId,
+                UsuarioId = usuarioId,
                 RolId = rolId,
                 Estado = 1
             });

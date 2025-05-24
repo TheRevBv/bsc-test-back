@@ -16,6 +16,6 @@ namespace BSC.Application.Interfaces
         Task<BaseResponse<Usuario?>> RegisterUsuario(UsuarioRequestDto requestDto);
         Task<BaseResponse<Usuario?>> EditUsuario(int productId, UsuarioRequestDto requestDto);
         Task<BaseResponse<bool>> RemoveUsuario(int productId);
-        Task<BaseResponse<bool>> AsignarRolesUsuario(AsignarRolesUsuarioDto dto);
+        Task<BaseResponse<bool>> AsignarRolesUsuario(int usuarioId, AsignarRolesUsuarioDto dto);
     }
 }

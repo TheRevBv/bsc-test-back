@@ -32,8 +32,8 @@ namespace BSC.Api.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id) => Ok(await _usuarioApp.RemoveUsuario(id));
 
-        [HttpPost("asignar-roles")]
+        [HttpPut("asignar-roles/{usuarioId}")]
         [Authorize]
-        public async Task<IActionResult> AsignarRoles([FromBody] AsignarRolesUsuarioDto dto) => Ok(await _usuarioApp.AsignarRolesUsuario(dto));
+        public async Task<IActionResult> AsignarRoles(int usuarioId, [FromBody] AsignarRolesUsuarioDto dto) => Ok(await _usuarioApp.AsignarRolesUsuario(usuarioId, dto));
     }
 }
