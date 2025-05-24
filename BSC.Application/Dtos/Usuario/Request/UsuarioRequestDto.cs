@@ -7,7 +7,6 @@ namespace BSC.Application.Dtos.Usuario.Request
     {
         [Required]
         public string? NombreUsuario { get; set; }
-        [Required]
         public string? Contrasena { get; set; }
         [Required]
         public string? Correo { get; set; }

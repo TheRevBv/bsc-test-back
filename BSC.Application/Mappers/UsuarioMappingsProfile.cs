@@ -18,7 +18,20 @@ namespace BSC.Application.Mappers
 
             CreateMap<Usuario, UsuarioByIdResponseDto>()
                 .ForMember(x => x.UsuarioId, x => x.MapFrom(y => y.Id))
+                .ForMember(x => x.Rol, x => x.MapFrom(y =>
+                    y.RolesUsuario.FirstOrDefault() != null
+                        ? y.RolesUsuario.First().Rol!.Descripcion
+                        : null
+                ))
+                .ForMember(x => x.RolId, x => x.MapFrom(y =>
+                    y.RolesUsuario.FirstOrDefault() != null
+                        ? (int?)y.RolesUsuario.First().Rol!.Id
+                        : null
+                ))
+                .ForMember(x => x.Estatus,
+                     x => x.MapFrom(y => y.Estado.Equals((int)StateTypes.Active) ? "Activo" : "Inactivo"))
                 .ReverseMap();
+
 
             CreateMap<UsuarioRequestDto, Usuario>();
 

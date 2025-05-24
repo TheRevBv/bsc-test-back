@@ -123,9 +123,9 @@ namespace BSC.Application.Services
             return response;
         }
 
-        public async Task<BaseResponse<Usuario?>> EditUsuario(int id, UsuarioRequestDto dto)
+        public async Task<BaseResponse<UsuarioByIdResponseDto?>> EditUsuario(int id, UsuarioRequestDto dto)
         {
-            var response = new BaseResponse<Usuario?>();
+            var response = new BaseResponse<UsuarioByIdResponseDto?>();
 
             try
             {
@@ -143,7 +143,8 @@ namespace BSC.Application.Services
                 var result = await _unitOfWork.Usuario.EditAsync(updated);
 
                 response.IsSuccess = result is not null;
-                response.Data = result;
+                response.Data = _mapper.Map<UsuarioByIdResponseDto>(result);
+
                 response.Message = result is not null ? ReplyMessage.MESSAGE_UPDATE : ReplyMessage.MESSAGE_FAILED;
             }
             catch (Exception ex)

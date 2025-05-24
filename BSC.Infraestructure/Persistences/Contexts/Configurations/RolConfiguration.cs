@@ -14,6 +14,8 @@ namespace BSC.Infrastructure.Persistences.Contexts.Configurations
             builder.Property(e => e.Descripcion)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+            builder.HasIndex(e => e.Descripcion).IsUnique();
         }
     }
 }

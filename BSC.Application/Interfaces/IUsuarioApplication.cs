@@ -14,7 +14,7 @@ namespace BSC.Application.Interfaces
         Task<BaseResponse<IEnumerable<SelectResponse>>> ListSelectUsuarios();
         Task<BaseResponse<UsuarioByIdResponseDto>> UsuarioById(int productId);
         Task<BaseResponse<Usuario?>> RegisterUsuario(UsuarioRequestDto requestDto);
-        Task<BaseResponse<Usuario?>> EditUsuario(int productId, UsuarioRequestDto requestDto);
+        Task<BaseResponse<UsuarioByIdResponseDto?>> EditUsuario(int productId, UsuarioRequestDto requestDto);
         Task<BaseResponse<bool>> RemoveUsuario(int productId);
         Task<BaseResponse<bool>> AsignarRolesUsuario(int usuarioId, AsignarRolesUsuarioDto dto);
     }
