@@ -175,6 +175,10 @@ namespace BSC.Infrastructure.Persistences.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Descripcion")
+                        .IsUnique()
+                        .HasFilter("[Descripcion] IS NOT NULL");
+
                     b.ToTable("Roles");
                 });
 
