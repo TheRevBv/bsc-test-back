@@ -131,6 +131,7 @@ namespace BSC.Application.Services
                 new Claim(JwtRegisteredClaimNames.GivenName, user.Correo!),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("role", user.RolesUsuario.FirstOrDefault()!.Rol!.Descripcion!),
                 new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
 
             };

@@ -26,6 +26,10 @@ namespace BSC.Application.Extensions
             services.AddScoped<IPedidoApplication, PedidoApplication>();
             services.AddScoped<IRolApplication, RolApplication>();
 
+            services.AddTransient<IFileStorageLocalApplication, FileStorageLocalApplication>();
+            services.AddScoped<IGenerateExcelApplication, GenerateExcelApplication>();
+            services.AddScoped<ISqlCoreApplication, SqlCoreApplication>();
+
             services.AddWatchDog(configuration);
 
             return services;

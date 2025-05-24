@@ -13,7 +13,9 @@ namespace BSC.Infrastructure.Persistences.Repositories
         public async Task<Usuario> UsuarioByCorreo(string email)
         {
             var user = await _context.Usuarios.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Correo!.Equals(email));
+                .Include(u => u.RolesUsuario)
+                    .ThenInclude(ru => ru.Rol)
+                .FirstOrDefaultAsync(x => x.Correo!.Equals(email) && x.Estado == (int)StateTypes.Active);
             return user!;
         }
 
