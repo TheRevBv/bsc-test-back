@@ -18,7 +18,7 @@ namespace BSC.Application.Mappers
                 .ReverseMap();
 
             CreateMap<Producto, ProductoByIdResponseDto>()
-                .ForMember(x => x.ProductId, x => x.MapFrom(y => y.Id))
+                .ForMember(x => x.ProductoId, x => x.MapFrom(y => y.Id))
                 .ReverseMap();
 
             CreateMap<ProductoRequestDto, Producto>();
