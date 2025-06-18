@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BSC.Application.Interfaces;
-using BSC.Application.Commons.Bases.Request;
+﻿using BSC.Application.Commons.Bases.Request;
+using BSC.Application.Dtos.Producto.Reports;
 using BSC.Application.Dtos.Producto.Request;
+using BSC.Application.Dtos.SqlCore.Request;
+using BSC.Application.Interfaces;
 using BSC.Utilities.Static;
 using Microsoft.AspNetCore.Authorization;
-using BSC.Application.Dtos.SqlCore.Request;
+using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
 namespace BSC.Api.Controllers
@@ -71,41 +72,39 @@ namespace BSC.Api.Controllers
         [HttpGet("reporte-existencias")]
         public async Task<IActionResult> GetReporteExistenciasAsync([FromQuery] bool? download)
         {
-            var request = new SqlCoreRequest
+            try
             {
-                ObjectName = "select * from [dbo].[fxObtenerExistenciaInventarioGeneral]()", // ¡Revisa este nombre!
-                CommandType = CommandType.Text,
-                ExecutionType = GenericExecutionType.QueryDynamic
-            };
-            var response = await _sqlCoreApplication.ExecuteAsync(request);
-
-            // Si se pide descarga Y la consulta fue exitosa
-            if (response.IsSuccess && download.GetValueOrDefault())
-            {
-                // Intenta castear a IEnumerable<object>. Esto funcionará para IEnumerable<dynamic>.
-                // La variable 'data' será IEnumerable<object>, T se inferirá como 'object'.
-                if (response.Data is IEnumerable<object> data && data.Any())
+                var request = new SqlCoreRequest
                 {
-                    // Obtiene las columnas como antes
-                    var columnNames = ExcelColumnNames.GetColumnsReporteExistencia();
+                    ObjectName = "select * from [dbo].[fxObtenerExistenciaInventarioGeneral]()",
+                    CommandType = CommandType.Text,
+                    ExecutionType = GenericExecutionType.Query
+                };
 
-                    // Llama al método GENÉRICO. ¡Ahora funcionará!
-                    var fileBytes = _generateExcelApplication.GenerateToExcel(data, columnNames);
+                var response = await _sqlCoreApplication.ExecuteQueryAsync<RptExistenciaInventarioDto>(request);
 
-                    var today = DateTime.UtcNow;
-                    var fileName = $"reporte_existencias_{today:yyyyMMdd_HHmmss}.xlsx";
-
-                    return File(fileBytes, ContentType.ContentTypeExcel, fileName);
-                }
-                else
+                if (response.IsSuccess && download.GetValueOrDefault())
                 {
-                    // Si se pidió descarga pero no hay datos, informa al usuario.
+                    if (response.Data is List<RptExistenciaInventarioDto> dataList && dataList.Count != 0)
+                    {
+                        var columnNames = ExcelColumnNames.GetColumnsReporteExistencia();
+                        var fileBytes = _generateExcelApplication.GenerateToExcel<RptExistenciaInventarioDto>(dataList, columnNames);
+                        var fileName = $"reporte_existencias_{DateTime.UtcNow:yyyyMMdd_HHmmss}.xlsx";
+
+                        return File(fileBytes, ContentType.ContentTypeExcel, fileName);
+                    }
+
+
                     return BadRequest("No hay datos disponibles para generar el reporte.");
                 }
-            }
 
-            // Si no se pide descarga o hubo error, devuelve la respuesta JSON.
-            return Ok(response);
+                return Ok(response);
+            }   
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno generando el archivo Excel.");
+            }
         }
+
     }
 }

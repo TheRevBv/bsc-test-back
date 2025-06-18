@@ -1,0 +1,34 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+        - "1433:1433"
+    volumes:
+        - sqlvolume:/var/opt/mssql
+    networks:
+        - bscnet
+
+  bsc-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bsc-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - sqlserver
+    networks:
+        - bscnet
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=BSCDB;User=sa;Password=YourStrong!Passw0rd
+
+volumes:
+  sqlvolume:
+
+networks:
+  bscnet:
+    driver: bridge

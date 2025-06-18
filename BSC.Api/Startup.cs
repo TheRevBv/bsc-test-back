@@ -37,9 +37,10 @@ public class Startup
             options.AddPolicy(name: Cors,
                 builder =>
                 {
-                    builder.WithOrigins(listUris!);
-                    builder.AllowAnyMethod();
-                    builder.AllowAnyHeader();
+                    builder.WithOrigins(listUris!)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("Content-Disposition");
                 });
         });
 

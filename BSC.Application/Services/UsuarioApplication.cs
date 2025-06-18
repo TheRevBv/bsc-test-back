@@ -139,6 +139,10 @@ namespace BSC.Application.Services
 
                 var updated = _mapper.Map(dto, usuario);
                 updated.Id = id;
+                if (dto.Contrasena != null)
+                {
+                    updated.Contrasena = PasswordHasher.HashPassword(dto.Contrasena);
+                }
 
                 var result = await _unitOfWork.Usuario.EditAsync(updated);
 

@@ -5,10 +5,8 @@ namespace BSC.Application.Dtos.Usuario.Request
 {
     public class UsuarioRequestDto
     {
-        [Required]
         public string? NombreUsuario { get; set; }
         public string? Contrasena { get; set; }
-        [Required]
         public string? Correo { get; set; }
         public string? Imagen { get; set; } = string.Empty;
         public string? TipoAutenticacion { get; set; } = "local";

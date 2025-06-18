@@ -1,4 +1,3 @@
-// PedidoController.cs
 using BSC.Application.Commons.Bases.Request;
 using BSC.Application.Commons.Bases.Response;
 using BSC.Application.Dtos.Pedido.Request;

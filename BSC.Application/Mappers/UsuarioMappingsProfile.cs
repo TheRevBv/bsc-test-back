@@ -33,7 +33,9 @@ namespace BSC.Application.Mappers
                 .ReverseMap();
 
 
-            CreateMap<UsuarioRequestDto, Usuario>();
+            CreateMap<UsuarioRequestDto, Usuario>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
 
             CreateMap<TokenRequestDto, Usuario>();
         }
